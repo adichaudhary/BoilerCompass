@@ -4,8 +4,9 @@ import httpx
 import datetime
 from dateutil import parser
 
-# This is the API URL you found, modified to get up to 200 upcoming events.
-BOILERLINK_API_URL = "https://boilerlink.purdue.edu/api/discovery/event/search?endsAfter=2025-09-20T00:00:00-04:00&orderByField=endsOn&orderByDirection=ascending&status=Approved&take=200&query="
+# This is the API URL you found, modified to get up to 200 upcoming events through end of semester.
+# Updated to collect events through December 15, 2025 (end of fall semester)
+BOILERLINK_API_URL = "https://boilerlink.purdue.edu/api/discovery/event/search?endsAfter=2025-09-20T00:00:00-04:00&endsBefore=2025-12-15T23:59:59-05:00&orderByField=endsOn&orderByDirection=ascending&status=Approved&take=500&query="
 
 def _normalize_date(date_str):
     if not date_str: return "unknown"

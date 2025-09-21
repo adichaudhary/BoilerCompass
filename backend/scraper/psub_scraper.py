@@ -5,18 +5,11 @@ from bs4 import BeautifulSoup
 import datetime
 from dateutil import parser
 from googleapiclient.discovery import build
-from dotenv import load_dotenv # NEW: Import load_dotenv here for the test
+from dotenv import load_dotenv
 
-# --- NEW: Debugging Prints ---
-# These lines will run before anything else.
-print("-" * 50)
-print(f"DEBUG: Current Working Directory: {os.getcwd()}")
-print(f"DEBUG: Does .env file exist here? {os.path.exists('.env')}")
-load_dotenv() # Manually load .env for our test
+# Load environment variables
+load_dotenv()
 API_KEY = os.getenv("GOOGLE_CALENDAR_API_KEY")
-print(f"DEBUG: API Key Found? {'Yes' if API_KEY else 'No'}")
-print("-" * 50)
-# --- End of Debugging Prints ---
 
 
 PSUB_CONFIG_URL = "https://union.purdue.edu/events/"
@@ -98,13 +91,14 @@ def scrape_psub_events():
         service = build('calendar', 'v3', developerKey=API_KEY)
         # Get the current time in the required format
         now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+        semester_end = datetime.datetime(2025, 12, 15, 23, 59, 59).isoformat() + 'Z'  # End of fall semester
 
         # Loop through each calendar ID we found (PMU, PSUB, etc.)
         for cal_id in calendar_ids:
             # Call the Calendar API with more detailed information
             events_result = service.events().list(
-                calendarId=cal_id, timeMin=now,
-                maxResults=20, singleEvents=True,
+                calendarId=cal_id, timeMin=now, timeMax=semester_end,
+                maxResults=50, singleEvents=True,
                 orderBy='startTime'
             ).execute()
             

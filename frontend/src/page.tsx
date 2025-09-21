@@ -1,5 +1,6 @@
 import React from 'react';
 import { useChat } from './hooks/useChat';
+import { ChatMessageNew } from './components/ChatMessageNew';
 
 export default function Home() {
   const {
@@ -35,17 +36,7 @@ export default function Home() {
           )}
 
           {messages.map((message) => (
-            <div key={message.id} className="mb-4">
-              <div className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] px-4 py-2 rounded-lg ${
-                  message.role === 'user' 
-                    ? 'bg-white text-black' 
-                    : 'bg-gray-700 text-white'
-                }`}>
-                  {message.content}
-                </div>
-              </div>
-            </div>
+            <ChatMessageNew key={message.id} message={message} />
           ))}
           
           {isTyping && (

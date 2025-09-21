@@ -2,6 +2,52 @@ import React from 'react';
 import { Message } from '../types/chat';
 import { Bot, User } from 'lucide-react';
 
+// Custom HTML parser that converts HTML to React elements
+const parseHTML = (html: string): React.ReactNode[] => {
+  const result: React.ReactNode[] = [];
+  let currentIndex = 0;
+  let keyCounter = 0;
+
+  while (currentIndex < html.length) {
+    // Look for <b> tags
+    const boldStart = html.indexOf('<b>', currentIndex);
+    const boldEnd = html.indexOf('</b>', currentIndex);
+    
+    // Look for <br> tags
+    const brTag = html.indexOf('<br>', currentIndex);
+    
+    if (boldStart !== -1 && (brTag === -1 || boldStart < brTag)) {
+      // Handle bold text
+      if (boldStart > currentIndex) {
+        result.push(html.substring(currentIndex, boldStart));
+      }
+      
+      if (boldEnd !== -1) {
+        const boldText = html.substring(boldStart + 3, boldEnd);
+        result.push(<strong key={keyCounter++}>{boldText}</strong>);
+        currentIndex = boldEnd + 4;
+      } else {
+        // Malformed HTML, treat as text
+        result.push(html.substring(currentIndex));
+        break;
+      }
+    } else if (brTag !== -1) {
+      // Handle line break
+      if (brTag > currentIndex) {
+        result.push(html.substring(currentIndex, brTag));
+      }
+      result.push(<br key={keyCounter++} />);
+      currentIndex = brTag + 4;
+    } else {
+      // No more tags, add remaining text
+      result.push(html.substring(currentIndex));
+      break;
+    }
+  }
+
+  return result;
+};
+
 interface ChatMessageProps {
   message: Message;
 }
@@ -34,9 +80,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
                 : 'dark-card text-white rounded-bl-md shadow-xl border border-white/10'
             }`}
           >
-            <p className="text-sm leading-relaxed whitespace-pre-wrap font-normal">
-              {message.content}
-            </p>
+            <div className="text-sm leading-relaxed whitespace-pre-wrap font-normal">
+              {parseHTML(message.content)}
+            </div>
           </div>
           
           {/* Timestamp */}

@@ -38,16 +38,22 @@ const getAIResponse = async (userMessage: string): Promise<string> => {
 };
 
 export const useChat = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content: 'Hello! I\'m BoilerCompass AI. Ask me about events, sports, and more at Purdue!',
-      role: 'assistant',
-      timestamp: new Date()
-    }
-  ]);
+  const initialMessage: Message = {
+    id: '1',
+    content: 'Hello! I\'m BoilerCompass AI. Ask me about events, sports, and more at Purdue!',
+    role: 'assistant' as const,
+    timestamp: new Date()
+  };
+
+  const [messages, setMessages] = useState<Message[]>([initialMessage]);
   const [isTyping, setIsTyping] = useState(false);
   const [inputValue, setInputValue] = useState('');
+
+  const resetChat = useCallback(() => {
+    setMessages([initialMessage]);
+    setInputValue('');
+    setIsTyping(false);
+  }, []);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -94,6 +100,7 @@ export const useChat = () => {
   return {
     messages,
     isTyping,
+    resetChat,
     inputValue,
     sendMessage,
     updateInputValue,

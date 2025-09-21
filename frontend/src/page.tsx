@@ -1,6 +1,8 @@
 import { useChat } from './hooks/useChat';
 import { StarterButtons } from './components/StarterButtons';
 
+import { ChatHeader } from './components/ChatHeader';
+
 export default function Home() {
   const {
     messages,
@@ -8,6 +10,7 @@ export default function Home() {
     inputValue,
     sendMessage,
     updateInputValue,
+    resetChat,
   } = useChat();
 
   const handleStarterButtonClick = (prompt: string) => {
@@ -18,9 +21,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       {/* Header */}
-      <div className="p-4 border-b border-white/10">
-        <h1 className="text-xl font-bold text-white">BoilerCompass</h1>
-      </div>
+      <ChatHeader onReset={resetChat} />
 
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto">
@@ -29,12 +30,12 @@ export default function Home() {
             <>
               {/* Welcome Section */}
               <div className="text-center py-12">
-                <div className="w-20 h-20 gold-gradient rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
-                  <span className="text-3xl">🚂</span>
+                <div className="w-20 h-20 mx-auto mb-6">
+                  <img src="/favicon.png" alt="BoilerCompass" className="w-full h-full rounded-3xl shadow-2xl" />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-3">Welcome to BoilerCompass</h2>
                 <p className="text-gray-300 max-w-md mx-auto leading-relaxed font-normal mb-8">
-                  Your AI assistant for everything Purdue. Ask about events, sports, academics, and campus life!
+                  Your AI assistant for everything Purdue. Ask about events, sports, food, and study spots!
                 </p>
 
                 {/* Starter Buttons */}

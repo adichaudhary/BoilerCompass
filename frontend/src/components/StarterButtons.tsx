@@ -19,16 +19,16 @@ export const StarterButtons: React.FC<StarterButtonProps> = ({ onSelect }) => {
             prompt: "What are the upcoming Purdue sports events?"
         },
         {
-            icon: "🎭",
-            title: "Entertainment",
+            icon: "🍝",
+            title: "Dining Options",
             description: "Find concerts and shows",
-            prompt: "What entertainment events are happening at Purdue?"
+            prompt: "Find dining locations that follow these dietary restrictions: "
         },
         {
-            icon: "🎓",
-            title: "Campus Activities",
-            description: "Discover what's happening on campus",
-            prompt: "What activities are happening on Purdue campus today?"
+            icon: "📖",
+            title: "Study Locations",
+            description: "Discover open study spots",
+            prompt: "Find optimal study locations on campus"
         }
     ]; return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto px-6 py-8">
